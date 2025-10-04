@@ -18,7 +18,7 @@ export default function HomeScreen() {
     getCameraPermissions();
   }, []);
 
-  const saveToHistory = async (data, type) => {
+  const saveToHistory = async (data: any, type: any) => {
     try {
       const newEntry = {
         id: Date.now().toString(),
@@ -26,8 +26,9 @@ export default function HomeScreen() {
         type: type,
         timestamp: new Date().toISOString(),
       };
+      const history = await AsyncStorage.getItem("scanHistory");
 
-      const updatedHistory = [newEntry, ...history];
+      const updatedHistory = [newEntry, ...JSON.parse(history as never)];
       // setHistory(updatedHistory);
       await AsyncStorage.setItem('scanHistory', JSON.stringify(updatedHistory));
     } catch (error) {
@@ -35,7 +36,7 @@ export default function HomeScreen() {
     }
   };
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ type, data }:any) => {
     setScanned(true);
     setScannedData(data);
     
